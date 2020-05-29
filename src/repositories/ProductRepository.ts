@@ -1,40 +1,90 @@
 import Product from '../models/Product';
 
-export default class ProductRepository{
+export default class ProductRepository {
 	private products: Array<Product>;
 
-	constructor(){
+	constructor() {
 		this.products = [];
 	}
 
-	public findAll():Array<Product> {//FOSSE BANCO SERIA UM SELECT
-		return this.products;
+	public findAll(): Array<Product> {
+		//FOSSE BANCO SERIA UM SELECT
+
+		return  this.products.filter(element => element.deletado === "null");
 	}
 
-	public findByCode(code: number): Product | undefined{//SELECT COM WHERE
-		return this.products.find(element => element.code === code);
+	public findByCode( code: number ): Array<Product> | undefined {
+		//SELECT COM WHERE
+
+		return this.products.filter(element => (element.code == code && element.deletado == "null"));
 	}
 
-	public save({code, description, buyPrice, sellPrice, tags, lovers}:Product): Product{// INSERT
+	public save({
+		code,
+		description,
+		buyPrice,
+		sellPrice,
+		tags,
+		lovers,
+		deletado
+	}: Product): Product {
+		// INSERT
 
-		const product = new Product({code, description, buyPrice, sellPrice, tags, lovers,});
-		
+		const product = new Product({
+			code,
+			description,
+			buyPrice,
+			sellPrice,
+			tags,
+			lovers,
+			deletado,
+		});
+
 		this.products.push(product);
-		
+
 		return product;
 	}
 
-	public delete(id: string): string{
-		
+	public delete(id: string): string {
 		const produtoDeletado = this.products.find(element => element.id === id);
 
-		if(produtoDeletado){
-			const produtosDeletados = this.products.filter(element => element.id !== id);
+		if (produtoDeletado) {
+			const produtosNaoDeletados = this.products.filter(
+				element => (element.id === id)? element.deletado = new Date(): element);
 
-			this.products = produtosDeletados;
+			this.products = produtosNaoDeletados;
 
 			return produtoDeletado.description;
-		}	
+		}
+	}
 
+	public alterar(
+		description: string,
+		buyPrice: number,
+		sellPrice: number,
+		tags: Array<Product>,
+		code: number,
+	): Array<Product> {
+
+		console.log(description, buyPrice, sellPrice, tags, code);
+		
+		const produtoAlterar = this.products.filter(element => {
+			if (element.code !== code) {
+				console.log(element);
+				return element;
+			} else {
+				console.log(description);
+				element.description = description;
+				element.buyPrice = buyPrice;
+				element.sellPrice = sellPrice;
+				element.tags = tags;
+
+				return element;
+			}
+		});
+
+		this.products = produtoAlterar;
+
+		return this.products;
 	}
 }

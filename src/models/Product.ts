@@ -11,6 +11,7 @@ export default class Product{
 	sellPrice: number;
 	tags: Array<Product>;
 	lovers: number;
+	deletado: Date | string;
 
 	constructor({
 		code,
@@ -28,6 +29,7 @@ export default class Product{
 		this.sellPrice = sellPrice;
 		this.tags = tags;
 		this.lovers = lovers;
+		this.deletado = "null";
 
 	}
 
