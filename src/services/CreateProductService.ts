@@ -22,9 +22,20 @@ export default class CreateProductService {
 		deletado,
 	}: Product): Product {
 		//atribui a constante product o resultado da busca por produto pelo code
-		const product = this.repository.findByCode(code); //chama o method findByCode(code: number)
-		let lovers = 0;
-		if (product) {
+		const product = this.repository.findByCode(Number(code)); //chama o method findByCode(code: number)
+
+		
+
+		if (product !== undefined) {
+			let v :number;	
+			const t = product.find(element => {
+				if(element.code == code){
+					v = element.lovers;
+					return v;
+				};
+			});	
+
+			console.log(v);
 
 			const p = new Product({
 				buyPrice,
@@ -32,10 +43,9 @@ export default class CreateProductService {
 				code,
 				description,
 				tags,
-				lovers: product.lovers,
+				lovers:v,
 				deletado,
 			});
-
 			this.repository.save(p);
 			return p;
 		} else {

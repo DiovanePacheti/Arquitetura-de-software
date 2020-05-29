@@ -72,11 +72,22 @@ productRouter.put('/:code', (req, res) => {
 		buyPrice,
 		sellPrice,
 		tags,
-		code,
+		Number(code),
 	);
 
 
 	return res.status(200).json(produtoAlterado);
 });
+
+productRouter.post('/:code/love', (req, res) =>{
+	
+	const {code} = req.params;
+
+	if(code){
+		const produtsLovers = productRepository.darLovers(Number(code));
+
+		return res.status(200).json(produtsLovers);
+	}
+})
 
 export default productRouter;

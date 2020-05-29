@@ -15,7 +15,9 @@ export default class ProductRepository {
 
 	public findByCode( code: number ): Array<Product> | undefined {
 		//SELECT COM WHERE
-
+		if(!(this.products.find(element => element.code == code))){
+			return undefined;
+		}
 		return this.products.filter(element => (element.code == code && element.deletado == "null"));
 	}
 
@@ -66,14 +68,11 @@ export default class ProductRepository {
 		code: number,
 	): Array<Product> {
 
-		console.log(description, buyPrice, sellPrice, tags, code);
 		
 		const produtoAlterar = this.products.filter(element => {
 			if (element.code !== code) {
-				console.log(element);
 				return element;
 			} else {
-				console.log(description);
 				element.description = description;
 				element.buyPrice = buyPrice;
 				element.sellPrice = sellPrice;
@@ -85,6 +84,22 @@ export default class ProductRepository {
 
 		this.products = produtoAlterar;
 
+		return this.products;
+	}
+
+	public darLovers(code: number): Array<Product> {
+
+		const productsLoversAdd = this.products.filter(element =>{
+
+			if(element.code !== code){
+				return element
+			}else{
+				element.lovers += 1;
+				return element;
+			}
+		}); 
+
+		this.products = productsLoversAdd;
 		return this.products;
 	}
 }
